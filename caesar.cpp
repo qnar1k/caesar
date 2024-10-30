@@ -9,8 +9,8 @@ using namespace std;
 class Cipher {
 private:
     char arr1[N];
-    int key; // Store the original key
-    int effectiveKey; // Store the validated effective key
+    int key;
+    int effectiveKey;
 
 public:
     Cipher() : key(0), effectiveKey(0) {
@@ -19,23 +19,20 @@ public:
         }
     }
 
-    // Setter for key with validation
     void setKey(int k) {
         if (k < 0) {
             throw invalid_argument("Key must be a non-negative integer.");
         }
         key = k;
-        effectiveKey = key % N; // Compute effective key
+        effectiveKey = key % N;
     }
 
-    // Getter for the original key
     int getKey() const {
         return key;
     }
 
-    // Getter for the effective key
     int getEffectiveKey() const {
-        return effectiveKey; // Return effective key
+        return effectiveKey;
     }
 
     void encrypt(const char word[], char encryptedWord[]) {
@@ -43,7 +40,7 @@ public:
         for (int i = 0; i < len; i++) {
             for (int j = 0; j < N; j++) {
                 if (word[i] == arr1[j]) {
-                    encryptedWord[i] = arr1[(j + getEffectiveKey())]; // Use effective key without % N
+                    encryptedWord[i] = arr1[(j + getEffectiveKey())];
                     break; 
                 }
             }
@@ -56,7 +53,7 @@ public:
         for (int i = 0; i < len; i++) {
             for (int j = 0; j < N; j++) {
                 if (word[i] == arr1[j]) {
-                    decryptedWord[i] = arr1[(j - getEffectiveKey() + N)]; // Use effective key without % N
+                    decryptedWord[i] = arr1[(j - getEffectiveKey() + N)];
                     break; 
                 }
             }
@@ -77,7 +74,7 @@ int main() {
     cin >> key;
 
     try {
-        cipher.setKey(key); // Set and validate the key
+        cipher.setKey(key);
 
         cout << "Enter a word to encrypt: ";
         cin >> word;
@@ -89,7 +86,7 @@ int main() {
         cipher.decrypt(word, decryptedWord);
         cout << "Decrypted word: " << decryptedWord << endl;
     } catch (const invalid_argument& e) {
-        cerr << e.what() << endl; // Print error message if key is invalid
+        cerr << e.what() << endl;
     }
 
     return 0;
